@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="odoo_auto_timetables.horarios_simple" name="Horarios simple">
+            <t t-call="website.layout">
+                <title>Horarios</title>
+                <meta charset="UTF-8"/>
+                <link rel="stylesheet" href="/escolares/static/src/css/horarios_web_site.css"/>
+                <div id="wrap">
+                    <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" id="id_horario_carrera_grupo" name="id_horario_carrera_grupo"
+                           t-att-value="id_horario_carrera_grupo"/>
+                    <div class="main-container-horarios">
+                        <h1>Bienvenido</h1>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div id="mensaje" class="alert hidden">
+                                    <strong></strong>
+                                    <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="col-xs-12 col-lg-2 col-sm-2">
+                                    <ul id="listado_de_horarios_grupos">
+                                        <t t-foreach="grupos or []" t-as="grupo">
+                                            <li>
+                                                <t t-esc="grupo.grupo_id"></t>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+            <script type="text/javascript" src="/horarios_extend/static/src/js/rq_comun.js"/>
+            <script type="text/javascript" src="/horarios_extend/static/src/js/horario_simple_render.js"/>
+            <script type="text/javascript" src="/horarios_extend/static/src/js/horario_simple_commun.js"/>
+            <script type="text/javascript" src="/horarios_extend/static/src/js/horario_simple.js"/>
+
+        </template>
+    </data>
+</odoo>

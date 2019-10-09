@@ -6,6 +6,7 @@
                 <title>Horarios</title>
                 <meta charset="UTF-8"/>
                 <link rel="stylesheet" href="/escolares/static/src/css/horarios_web_site.css"/>
+                <link rel="stylesheet" href="/odoo_auto_timetables/static/src/css/main.css"/>
                 <div id="wrap">
                     <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <input type="hidden" id="id_horario_carrera_grupo" name="id_horario_carrera_grupo"
@@ -25,13 +26,48 @@
 
                             <div class="row">
                                 <div class="col-xs-12 col-lg-2 col-sm-2">
-                                    <ul id="listado_de_horarios_grupos">
-                                        <t t-foreach="grupos or []" t-as="grupo">
-                                            <li>
-                                                <t t-esc="grupo.grupo_id"></t>
-                                            </li>
-                                        </t>
-                                    </ul>
+                                    <t t-foreach="grupos or []" t-as="grupo">
+                                        <div class="card card-default">
+                                            <div class="card-header">
+                                                <b t-field="grupo.grupo_id"/>
+                                            </div>
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li>Total de materias:
+                                                        <t t-esc="len(grupo.horario_id)"/>
+                                                    </li>
+                                                    <li>
+                                                        Estatus:
+                                                        <span t-field="grupo.state"/>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                </div>
+                                <div class="col-xs-12 col-lg-10 col-sm-10">
+                                    <div class="container">
+                                        <div class="col-xs-12 col-sm-12 col-lg-12">
+                                            <div class="table-resposive">
+                                                <table class="table table-bordered table-striped table-condensed">
+                                                    <thead>
+                                                        <tr class="info">
+                                                            <th>Hora</th>
+                                                            <th>L</th>
+                                                            <th>M</th>
+                                                            <th>Mi</th>
+                                                            <th>J</th>
+                                                            <th>V</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -4,7 +4,7 @@
 @project 
 @name main
 """
-from PyGenTimeable.gentic_core.gentic import Solution
+from PyGenTimeable.genetic_core.genetic import Solution
 
 DIAS = [1, 2, 3, 4, 5]
 TOTAL_HORAS = 8
@@ -26,5 +26,6 @@ if __name__ == '__main__':
     print("*" * 50)
     setHorasExample()
     solution = Solution(HORAS)
+
 
 

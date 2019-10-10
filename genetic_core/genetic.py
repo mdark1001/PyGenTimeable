@@ -16,17 +16,17 @@ def getBestChromosome(fitness, sizeTarget, fitnessTarget, genSet, show):
     random.seed()
     solution = Solution(genSet)
     bestParent = solution.generate_parent(sizeTarget)
-   # # show(solution.getBestParent())
-   #  if bestParent.Fitness >= fitnessTarget:
-   #      return bestParent
-   #  while True:
-   #      children = _mutar(parent=bestParent, genSet=genSet, fitness=fitness)
-   #      if bestParent.Fitness >= children.Fitness:
-   #          continue
-   #      show(children)
-   #      if children.Fitness >= fitnessTarget:
-   #          return children
-   #      bestParent = children
+    # # show(solution.getBestParent())
+    #  if bestParent.Fitness >= fitnessTarget:
+    #      return bestParent
+    #  while True:
+    #      children = _mutar(parent=bestParent, genSet=genSet, fitness=fitness)
+    #      if bestParent.Fitness >= children.Fitness:
+    #          continue
+    #      show(children)
+    #      if children.Fitness >= fitnessTarget:
+    #          return children
+    #      bestParent = children
 
 
 class Solution(object):
@@ -38,7 +38,7 @@ class Solution(object):
         self.genSet = genSet
         self.childrens = []
 
-    def generate_parent(self, size):
+    def generate_parent(self, size, ref):
         """
         :param size:
         :return: Chromosome Object
@@ -48,7 +48,7 @@ class Solution(object):
         while len(genes) < size:
             sizeMuestral = min(size - len(genes), len(self.genSet))
             genes.extend(random.sample(self.genSet, sizeMuestral))
-        parent = Chromosome(genes)
+        parent = Chromosome(genes, ref)
         parent.calculateFitness()
         self.childrens.append(parent)
         return parent
@@ -69,3 +69,15 @@ class Solution(object):
         children = Chromosome(genes)
         children.calculateFitness()
         return children
+
+    def initTable(self, fuc):
+        fuc()
+
+    def getGlobalFitness(self):
+        return sum()
+
+    def getChildrens(self):
+        return self.childrens
+
+    def printer(self):
+        map(lambda children: "{}".format(children.getChildrens()), self.childrens)

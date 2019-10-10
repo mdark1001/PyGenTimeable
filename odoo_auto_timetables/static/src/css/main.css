@@ -271,7 +271,21 @@
 }
 
 /* custom miguelCabrera */
-div#horario-container-cards {
-    max-height: 250px !important;
-    overflow-y: scroll;
+
+.badge-responsive {
+    border: 1px solid black;
+
+    text-align: center;
+    padding: 2px;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    color: white;
+}
+
+.badge-block {
+    display: block;
+}
+
+.badge-list {
+    display: list-item;
 }

@@ -41,15 +41,40 @@ const horario_simple = function () {
 
     function renderTimetables(d) {
         return new Promise(function (resolve, reject) {
-            resolve("")
+            let html = ""
+
+            horario_simple.getHoras().forEach((h, index) => {
+                html += ` <tr>
+                <td>${h['name']}</td>`;
+                Object.keys(horario_simple.getDiasSemana()).forEach(d => {
+                    html += `
+                        <td id="${d}_${h['id']}">
+                        </td>
+                    `;
+                });
+                html += `</tr>`
+            });
+            resolve(html)
         })
 
     }
 
     function renderListMaterias(data) {
         return new Promise(function (resolve, reject) {
-            console.log(data);
-            let html = ""
+            let html = "";
+            all_data['grupos_horarios'] = data;
+            all_data['grupos_horarios'].forEach((d, index) => {
+                d['color'] = COLORS_TIMETABLE[index % COLORS_TIMETABLE.length]
+
+                html += ` <tr>
+                            <td><div class="badge-responsive badge-block"  style=" background-color: ${d['color']}; color: white;" >
+                                ${  d['subject_id'][1]}-${d['code_subject']} <br/>
+                             ${d['faculty_id'] ? d['faculty_id'][1] : ''} <br/>
+                            ${0}
+                            </div>
+                            </td>
+                      </tr>`;
+            });
             resolve(html)
 
         })
@@ -80,11 +105,12 @@ const horario_simple = function () {
             return all_data['grupos_horarios'];
         },
         getHoras: function () {
-            return all_data['horas'];
+            return HORAS
         },
         getDiasSemana: function () {
             return all_data['dias_semana'];
         },
+
         showTimetablesById: function (horario_id, tableBodyId) {
             rq.sendSimpleRequest(base_url + 'time_information', {
                     'horario_id': horario_id
@@ -97,10 +123,22 @@ const horario_simple = function () {
                     }
 
                     $(tableBodyId).html('' + html);
-                    $("#list_materia").html('' + list_materia);
+                    $("#table_list_materia").html('' + list_materia);
 
                 }
             )
+        },
+        propuestaSolucion: function (horario_id, tableBodyId) {
+            return new Promise(function (resolve, reject) {
+
+                rq.sendSimpleRequest(base_url + 'solution', {
+                    'horario_id': horario_id
+                }, 'GET', 'json', async function (data) {
+                    console.log(data);
+                    resolve(data)
+                })
+            })
+
         }
 
     }

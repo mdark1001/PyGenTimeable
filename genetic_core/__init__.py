@@ -5,7 +5,7 @@
 @name __init__.py
 """
 
-from . import gentic
+from . import genetic
 from . import chromesome
 from . import fitness
 from . import printing

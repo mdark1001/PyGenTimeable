@@ -3,7 +3,7 @@
  * Created by miguel on 10/06/18.
  */
 
-const classes = ['#eb007a',
+const COLORS_TIMETABLE = ['#eb007a',
     '#951b81',
     '#009fe3',
     '#ccd622',
@@ -583,5 +583,27 @@ const rq = {
             });
         }
         return materia;
+    },
+    setTableLoading: function (grupos, table) {
+        let selector_td = ''
+        let dias = Object.keys(horario_simple.getDiasSemana())
+
+        for (let i = 0; i < 100; i++) {
+            let dia = parseInt(Math.random(0, dias.length) * dias.length)
+            let hora = parseInt(Math.random(0, HORAS.length) * HORAS.length)
+            selector_td = dias[dia] + "_" + HORAS[hora].id;
+            $(table).find(`td#${selector_td}`).html(`
+                <div class="badge-responsive badge-list animated infinite fadeOut delay-${parseInt(Math.random(2, 5)*5 )}s"  style=" background-color:${COLORS_TIMETABLE[i % COLORS_TIMETABLE.length
+
+                ]}">
+                
+                </div>    
+            `)
+
+        }
+
+    },
+    removeLoadingTable(table){
+        $(table).find("div.badge-responsive").remove()
     }
 };

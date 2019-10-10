@@ -9,6 +9,7 @@ from odoo import models, fields, api
 
 TOTAL_DIAS = 6
 MAX_HORAS = 96
+HORAS = []
 
 
 class EngineHorarios(models.Model):
@@ -118,38 +119,64 @@ class EngineHorarios(models.Model):
         info['materias'] = materias_horario
         return info
 
-    def getMateriasByHorario(self, horario_id):
-        return self.env['ops4g.horario_materia_grupo'].sudo().search_read(
-            [('horario_id.id', '=', horario_id)],
-            ['horario_id',
-             'periodo_id',
-             'subject_id',
-             'faculty_id',
-             'code_subject']
-        )
+    def getMateriasByHorario(self, horario_id, json=True):
+        horario_materia = self.env['ops4g.horario_materia_grupo'].sudo()
+        if json:
+            return horario_materia.search_read(
+                [('horario_id.id', '=', horario_id)],
+                ['horario_id',
+                 'periodo_id',
+                 'subject_id',
+                 'faculty_id',
+                 'horas_materia_semana',
+                 'code_subject']
+            )
+        return horario_materia.search(
+            [('horario_id.id', '=', horario_id)])
+
+    def setHoras(self):
+        global HORAS
+        HORAS = [x for x in range(1, MAX_HORAS)]
+
+    def inicializar(self, solution, materias):
+        for materia in materias:
+            horas_semana = materia.horas_materia_semana
+            horas_semana = 5 if not horas_semana else horas_semana
+            profesoaresList = self.buscarProfesoresIdealByMateria(materia.subject_id.id, materia.periodo_id.id)
+            materia.profesores = profesoaresList
+
+            solution.generate_parent(size=horas_semana, ref=materia)
+
+    def generateSolutionGrupo(self, horario_id, gt):
+        self.setHoras()
+        solution = gt.Solution(HORAS)
+        materias = self.getMateriasByHorario(horario_id=horario_id, json=False)
+        self.inicializar(solution, materias)
+
+        solution.printer()
+        # while soslution.getGlobalFitness() > 1:
+        #    solution.selection()
 
 
+        return []
 
-        # @api.multi
-        # def engineHorario(self, horario_id):
-        #     pass
-        #
-        # def buscarProfesoresIdealByMateria(self, materia_id):
-        #     profesores_impartieron_materia = self.env['profesores_materias_impartidas_kardex'].sudo().search([
-        #         ('materia_id.id', '=', materia_id)
-        #
-        #     ], limit=10).sorted(lambda r: r.alumnos_aprobados)
-        #
-        #     profersores_impartio_materia = []
-        #     for profesor in profesores_impartieron_materia:
-        #         profersores_impartio_materia.append({
-        #             'profesor_id': profesor.profesor_id.id,
-        #             'profesor': profesor.profesor_id,
-        #             'tiene_permanencia': True
-        #         })
-        #
-        #     return profersores_impartio_materia
-        #
+    def buscarProfesoresIdealByMateria(self, materia_id, periodo_id):
+        profesores_impartieron_materia = self.env['profesores_materias_impartidas_kardex'].sudo().search([
+            ('materia_id.id', '=', materia_id)
+
+        ], limit=10).sorted(lambda r: r.alumnos_aprobados)
+
+        profersores_impartio_materia = []
+        for profesor in profesores_impartieron_materia:
+            profersores_impartio_materia.append({
+                'profesor_id': profesor.profesor_id.id,
+                'profesor': profesor.profesor_id,
+                'tiene_permanencia': True,
+                'disponibilidad': profesor.profesor_id.getDisponilidadByPeriodoId(periodo_id)
+            })
+
+        return profersores_impartio_materia
+
         # @api.multi
         # def generarEstructuraHorarios(self, horarios):
         #     engine = {}

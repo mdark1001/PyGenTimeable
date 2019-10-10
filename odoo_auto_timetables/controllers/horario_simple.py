@@ -15,17 +15,23 @@ from odoo.exceptions import ValidationError
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def _getModuleObject(path_module, name):
+def _getModuleObject(path_module, name, es_edrp=False):
     path = BASE_DIR.split('/')
-    path = '/'.join(path[0:len(path) - 2]) + '/edrp_dev' + path_module
+    if es_edrp:
+        path = '/'.join(path[0:len(path) - 2]) + '/edrp_dev' + path_module
+    else:
+        path = '/'.join(path[0:len(path) - 1]) + path_module
     from importlib.machinery import SourceFileLoader
     module = SourceFileLoader(name, path).load_module()
     return module
 
 
 horario_controllers = _getModuleObject('/horarios/controllers/__init__.py',
-                                       'horario_controllers')
+                                       'horario_controllers', True)
+genetic_core = _getModuleObject('/genetic_core/__init__.py',
+                                'genetic_core')
 from horario_controllers.main import Horarios
+import genetic_core.genetic as gt
 
 headers_response = [
     ("Access-Control-Allow-Origin", "*"),
@@ -48,7 +54,8 @@ class HorariosExtendsSimple(Horarios):
         return http.request.render('odoo_auto_timetables.horarios_simple',
                                    {
                                        'id_horario_carrera_grupo': id_horario_carrera_grupo,
-                                       'grupos': self.gruposByIdCarreraHorario(id_horario_carrera_grupo)
+                                       'grupos': self.gruposByIdCarreraHorario(id_horario_carrera_grupo),
+                                       'horas': self.getHoras()
                                    })
 
     @http.route('/api/horarios/initmodel/', methods=['GET'], auth='user', website=True)
@@ -80,6 +87,21 @@ class HorariosExtendsSimple(Horarios):
             'data': []
         })
 
+    @http.route('/api/horarios/solution', methods=['GET'], auth='user', website=True)
+    def solution(self, **kw):
+        horario_id = int(kw.get('horario_id', 0))
+
+        if horario_id:
+            return makeResponse(200, {
+                'message': 'Todo bien',
+                'data': http.request.env['oohel.engine_horario'].generateSolutionGrupo(horario_id, gt)
+            })
+
+        return makeResponse(500, {
+            'message': 'Error al procesar su solicitud',
+            'data': []
+        })
+
     def gruposByIdCarreraHorario(self, id_horario_carrera):
         periodo_carrera = http.request.env['ops4g.periodo_carrera_grupos'].sudo().gruposByIdCarreraHorario(
             id_horario_carrera)
@@ -96,4 +118,4 @@ class HorariosExtendsSimple(Horarios):
         return materias
 
     def getHoras(self):
-        return http.request.env['ops4g.horas_horario'].sudo().search([])
+        return http.request.env['ops4g.horas_horario'].sudo().search_read([], ['id', 'name'])

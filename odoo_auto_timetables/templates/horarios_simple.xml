@@ -53,22 +53,31 @@
 
                                 </div>
                                 <div class="col-xs-12 col-lg-10 col-sm-10">
-                                    <div class="container">
-                                        <div class="col-xs-12 col-sm-12 col-lg-12">
-                                            <div class="table-resposive">
-                                                <table class="table table-bordered table-striped table-condensed">
-                                                    <thead>
-                                                        <tr class="info">
-                                                            <th>Hora</th>
-                                                            <th>L</th>
-                                                            <th>M</th>
-                                                            <th>Mi</th>
-                                                            <th>J</th>
-                                                            <th>V</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
 
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 col-lg-12" id="list_materia">
+
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-lg-12">
+                                                <div class="table-resposive">
+                                                    <table class="table table-bordered table-striped table-condensed" id="table-horario">
+                                                        <thead>
+                                                            <tr class="info">
+                                                                <th>Hora</th>
+                                                                <th>L</th>
+                                                                <th>M</th>
+                                                                <th>Mi</th>
+                                                                <th>J</th>
+                                                                <th>V</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <body id="table-horario-body">
+
+                                                        </body>
+                                                    </table>
+
+                                                </div>
                                             </div>
                                         </div>
 

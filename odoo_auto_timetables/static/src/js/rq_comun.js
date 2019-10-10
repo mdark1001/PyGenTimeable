@@ -2,6 +2,25 @@
 /**
  * Created by miguel on 10/06/18.
  */
+
+const classes = ['#eb007a',
+    '#951b81',
+    '#009fe3',
+    '#ccd622',
+    '#1f4a8a',
+    '#0fafa0',
+    '#f18400',
+    '#ffcc00',
+    '#330066',
+    '#cc33ff',
+    '#ff0000',
+    '#fd9457',
+    '#00ff00',
+    '#fff500',
+    '#686bab',
+    '#e64963',
+    '#3bb3c2'
+];
 const rq = {
     mensaje_alert: "#mensaje",
     text: '',

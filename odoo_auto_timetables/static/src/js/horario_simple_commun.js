@@ -39,11 +39,20 @@ const horario_simple = function () {
     };
     let base_url = '/api/horarios/';
 
-    function  renderTimetables(d) {
+    function renderTimetables(d) {
         return new Promise(function (resolve, reject) {
-
+            resolve("")
         })
 
+    }
+
+    function renderListMaterias(data) {
+        return new Promise(function (resolve, reject) {
+            console.log(data);
+            let html = ""
+            resolve(html)
+
+        })
     }
 
 
@@ -81,11 +90,14 @@ const horario_simple = function () {
                     'horario_id': horario_id
                 }, 'GET', 'json', async function (data) {
                     let html = '';
+                    let list_materia = '';
                     if (data.state == 200) {
-                        html += await renderTimetables(data.data)
+                        html += await renderTimetables(data.response.data.materias);
+                        list_materia += await renderListMaterias(data.response.data.materias);
                     }
 
-                    $(tableBodyId).html('' + html)
+                    $(tableBodyId).html('' + html);
+                    $("#list_materia").html('' + list_materia);
 
                 }
             )

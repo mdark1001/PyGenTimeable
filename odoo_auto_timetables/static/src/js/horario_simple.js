@@ -12,7 +12,7 @@ $(function () {
             return;
         }
 
-        horario_simple.showTimetablesById(horario_id)
+        horario_simple.showTimetablesById(horario_id, "#table-horario-body")
 
     })
 

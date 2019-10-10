@@ -80,10 +80,10 @@
                 </div>
             </t>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-            <script type="text/javascript" src="/horarios_extend/static/src/js/rq_comun.js"/>
-            <script type="text/javascript" src="/horarios_extend/static/src/js/horario_simple_render.js"/>
-            <script type="text/javascript" src="/horarios_extend/static/src/js/horario_simple_commun.js"/>
-            <script type="text/javascript" src="/horarios_extend/static/src/js/horario_simple.js"/>
+            <script type="text/javascript" src="/odoo_auto_timetables/static/src/js/rq_comun.js"/>
+            <script type="text/javascript" src="/odoo_auto_timetables/static/src/js/horario_simple_render.js"/>
+            <script type="text/javascript" src="/odoo_auto_timetables/static/src/js/horario_simple_commun.js"/>
+            <script type="text/javascript" src="/odoo_auto_timetables/static/src/js/horario_simple.js"/>
 
         </template>
     </data>

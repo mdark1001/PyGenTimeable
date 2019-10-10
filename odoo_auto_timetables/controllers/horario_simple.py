@@ -65,6 +65,21 @@ class HorariosExtendsSimple(Horarios):
         }
         return makeResponse(200, data)
 
+    @http.route('/api/horarios/time_information', methods=['GET'], auth='user', website=True)
+    def time_information(self, **kw):
+        horario_id = int(kw.get('horario_id', 0))
+
+        if horario_id:
+            return makeResponse(200, {
+                'message': 'Todo bien',
+                'data': http.request.env['oohel.engine_horario'].getMateriasHorarioByHorarioId(horario_id)
+            })
+
+        return makeResponse(500, {
+            'message': 'Error al procesar su solicitud',
+            'data': []
+        })
+
     def gruposByIdCarreraHorario(self, id_horario_carrera):
         periodo_carrera = http.request.env['ops4g.periodo_carrera_grupos'].sudo().gruposByIdCarreraHorario(
             id_horario_carrera)

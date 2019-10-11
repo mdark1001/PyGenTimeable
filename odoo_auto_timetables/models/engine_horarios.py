@@ -8,7 +8,7 @@
 from odoo import models, fields, api
 
 TOTAL_DIAS = 6
-MAX_HORAS = 96
+MAX_HORAS = 17
 HORAS = []
 
 
@@ -136,7 +136,13 @@ class EngineHorarios(models.Model):
 
     def setHoras(self):
         global HORAS
-        HORAS = [x for x in range(1, MAX_HORAS)]
+        HORAS = [[x for x in range(1, MAX_HORAS)],
+                 [x for x in range(1, MAX_HORAS)],
+                 [x for x in range(1, MAX_HORAS)],
+                 [x for x in range(1, MAX_HORAS)],
+                 [x for x in range(1, MAX_HORAS)],
+                 [x for x in range(1, MAX_HORAS)],
+                 ]
 
     def inicializar(self, solution, materias):
         for materia in materias:
@@ -144,7 +150,7 @@ class EngineHorarios(models.Model):
             horas_semana = 5 if not horas_semana else horas_semana
             profesoaresList = self.buscarProfesoresIdealByMateria(materia.subject_id.id, materia.periodo_id.id)
             materia.profesores = profesoaresList
-
+            # print(materia.profesores)
             solution.generate_parent(size=horas_semana, ref=materia)
 
     def generateSolutionGrupo(self, horario_id, gt):
@@ -172,60 +178,7 @@ class EngineHorarios(models.Model):
                 'profesor_id': profesor.profesor_id.id,
                 'profesor': profesor.profesor_id,
                 'tiene_permanencia': True,
-                'disponibilidad': profesor.profesor_id.getDisponilidadByPeriodoId(periodo_id)
+                'disponibilidad': profesor.profesor_id.getDisponilidadByPeriodoId(periodo_id=periodo_id, is_fake=True)
             })
 
         return profersores_impartio_materia
-
-        # @api.multi
-        # def generarEstructuraHorarios(self, horarios):
-        #     engine = {}
-        #     grupos = {}
-        #
-        #     for horario in horarios:
-        #         materias_engie = []
-        #         for horario_materia_grupo in horario.horario_id:
-        #             profesores = self.buscarProfesoresIdealByMateria(horario_materia_grupo.subject_id.id)
-        #             datos_materia = {
-        #                 'subject_id': horario_materia_grupo.subject_id.id,
-        #                 'grupo': horario_materia_grupo.grupo_id.id,
-        #                 'salon_id': horario.grupo_id.salon_id.id,
-        #                 'soluciones': [],
-        #                 'listado_profesores': profesores,
-        #                 'profesor_ideal': False,
-        #                 'tiene_empalme': False,
-        #                 'turno_tag': str(horario_materia_grupo.grupo_id.turno.name).lower()
-        #             }
-        #             materias_engie.append(datos_materia)
-        #             engine[str(horario_materia_grupo.id)] = datos_materia
-        #         grupos[str(horario.grupo_id.id)] = {
-        #             'soluciones': [],
-        #             'materias': materias_engie
-        #         }
-        #
-        #     return grupos
-        #
-        # @api.multi
-        # def run(self, data, soluciones, items):
-        #     if all([data, soluciones, items]):
-        #         matris_horarios = self.getMatrisSolucion()
-        #         for solucion in range(soluciones):
-        #             for index, grupo_index in enumerate(data):
-        #                 grupo = data[grupo_index]
-        #                 grupo.soluciones.append(self.initProblacion(grupo.items))
-        #                 data[grupo_index] = grupo
-        #     return False
-        #
-        # def getMatrisSolucion(self):
-        #     horas = self.env['ops4g.horas_horario'].sudo().search([])
-        #     matris_solucion = []
-        #     item = 1
-        #     for dia in range(TOTAL_DIAS):
-        #         matris_solucion.append([])
-        #         for hora in horas:
-        #             matris_solucion[dia - 1].append(item)
-        #             item += 1
-        #     return matris_solucion
-        #
-        # def initProblacion(self, items):
-        #     return []

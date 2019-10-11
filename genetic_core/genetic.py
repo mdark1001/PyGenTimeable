@@ -46,8 +46,11 @@ class Solution(object):
 
         genes = []
         while len(genes) < size:
-            sizeMuestral = min(size - len(genes), len(self.genSet))
-            genes.extend(random.sample(self.genSet, sizeMuestral))
+            # sizeMuestral = min(size - len(genes), len(self.genSet))
+            dia = random.randint(0, 6)
+            hora = random.sample(self.genSet, 1)
+            genes.append((dia, hora))
+            # genes.extend(random.sample(self.genSet, sizeMuestral))
         parent = Chromosome(genes, ref)
         parent.calculateFitness()
         self.childrens.append(parent)
@@ -80,4 +83,4 @@ class Solution(object):
         return self.childrens
 
     def printer(self):
-        map(lambda children: "{}".format(children.getChildrens()), self.childrens)
+        map(lambda children: print("{}".format(children.getGenes())), self.childrens)

@@ -42,15 +42,16 @@ const horario_simple = function () {
     function renderTimetables(d) {
         return new Promise(function (resolve, reject) {
             let html = ""
-
+            let i = 1;
             horario_simple.getHoras().forEach((h, index) => {
                 html += ` <tr>
                 <td>${h['name']}</td>`;
                 Object.keys(horario_simple.getDiasSemana()).forEach(d => {
                     html += `
-                        <td id="${d}_${h['id']}">
+                        <td id="time_${i}">
                         </td>
                     `;
+                    i++;
                 });
                 html += `</tr>`
             });
@@ -139,6 +140,34 @@ const horario_simple = function () {
                 })
             })
 
+        },
+        getColorGrupos: function () {
+            return new Promise(function (resolve, reject) {
+                let colors = {};
+                horario_simple.getGrupos().forEach(d => {
+                    colors[d.id] = d.color
+                });
+                resolve(colors)
+
+            })
+        },
+        rennderTableForData: async function (data) {
+            let colors = await horario_simple.getColorGrupos()
+            console.log(data);
+            data.forEach(d => {
+
+                console.log(d);
+                d.genes.forEach(g => {
+                    $(`td#time_${g}`).append(
+                        `
+                   <div class="badge-responsive badge-block"  style=" background-color: ${colors[d.horario_materia_id]}; color: white;" >
+                   Nombre:${d.name} </div><br>
+                        `
+                    );
+                })
+
+
+            })
         }
 
     }

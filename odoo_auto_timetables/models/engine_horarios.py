@@ -7,9 +7,10 @@
 
 from odoo import models, fields, api
 
-TOTAL_DIAS = 6
-MAX_HORAS = 17
-HORAS = []
+DIAS = [0, 1, 2, 3, 4, 5]
+TOTAL_HORAS = 17
+
+HORAS = [x for x in range(1, TOTAL_HORAS * len(DIAS))]
 
 
 class EngineHorarios(models.Model):
@@ -134,37 +135,35 @@ class EngineHorarios(models.Model):
         return horario_materia.search(
             [('horario_id.id', '=', horario_id)])
 
-    def setHoras(self):
-        global HORAS
-        HORAS = [[x for x in range(1, MAX_HORAS)],
-                 [x for x in range(1, MAX_HORAS)],
-                 [x for x in range(1, MAX_HORAS)],
-                 [x for x in range(1, MAX_HORAS)],
-                 [x for x in range(1, MAX_HORAS)],
-                 [x for x in range(1, MAX_HORAS)],
-                 ]
-
-    def inicializar(self, solution, materias):
+    def inicializar(self, horario_id):
+        materias = self.getMateriasByHorario(horario_id=horario_id, json=False)
+        mat = []
         for materia in materias:
             horas_semana = materia.horas_materia_semana
             horas_semana = 5 if not horas_semana else horas_semana
             profesoaresList = self.buscarProfesoresIdealByMateria(materia.subject_id.id, materia.periodo_id.id)
-            materia.profesores = profesoaresList
-            # print(materia.profesores)
-            solution.generate_parent(size=horas_semana, ref=materia)
+            mat.append({
+                'materia_id': materia.subject_id.id,
+                'horario_materia_id': materia.id,
+                'name': materia.code_subject,
+                'horas_semana': horas_semana,
+                'profesores_candidatos': profesoaresList,
+            }, )
+
+        return mat
 
     def generateSolutionGrupo(self, horario_id, gt):
-        self.setHoras()
-        solution = gt.Solution(HORAS)
-        materias = self.getMateriasByHorario(horario_id=horario_id, json=False)
-        self.inicializar(solution, materias)
-
+        global HORAS
+        HORAS = [x for x in range(1, TOTAL_HORAS * len(DIAS))]
+        materias = self.inicializar(horario_id=horario_id)
+        solution = gt.Solution(HORAS, materias)
         solution.printer()
-        # while soslution.getGlobalFitness() > 1:
-        #    solution.selection()
+        solution.getGlobalFitness()
+        while solution.getGlobalFitness() != 0:
+            solution.selection()
+            solution.printer()
 
-
-        return []
+        return [x.serializer() for x in solution.getChildrens()]
 
     def buscarProfesoresIdealByMateria(self, materia_id, periodo_id):
         profesores_impartieron_materia = self.env['profesores_materias_impartidas_kardex'].sudo().search([

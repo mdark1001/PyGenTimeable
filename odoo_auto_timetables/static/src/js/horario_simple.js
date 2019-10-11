@@ -27,11 +27,14 @@ $(function () {
 
         if (confirm("¿Desea generar una propuesta de horario para esté grupo?")) {
             rq.setTableLoading(horario_simple.getGrupos(), "#table_horario_body");
-            setTimeout(function () {
-                rq.removeLoadingTable("#table_horario_body")
-                $('.btn').attr('disabled', false)
-            }, 4500);
-            await horario_simple.propuestaSolucion(horario_id, "#table_horario_body")
+
+            horario_simple.propuestaSolucion(horario_id, "#table_horario_body").then(data => {
+                setTimeout(function () {
+                    rq.removeLoadingTable("#table_horario_body")
+                    $('.btn').attr('disabled', false)
+                    horario_simple.rennderTableForData(data.response.data)
+                }, 4500);
+            })
 
         } else {
             $('.btn').attr('disabled', false)

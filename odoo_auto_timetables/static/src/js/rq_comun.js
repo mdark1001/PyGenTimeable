@@ -589,9 +589,9 @@ const rq = {
         let dias = Object.keys(horario_simple.getDiasSemana())
 
         for (let i = 0; i < 100; i++) {
-            let dia = parseInt(Math.random(0, dias.length) * dias.length)
-            let hora = parseInt(Math.random(0, HORAS.length) * HORAS.length)
-            selector_td = dias[dia] + "_" + HORAS[hora].id;
+            let dia = parseInt(Math.random(0, (dias.length*HORAS.length)) * (dias.length*HORAS.length))
+
+            selector_td = "time_" + dia
             $(table).find(`td#${selector_td}`).html(`
                 <div class="badge-responsive badge-list animated infinite fadeOut delay-${parseInt(Math.random(2, 5)*5 )}s"  style=" background-color:${COLORS_TIMETABLE[i % COLORS_TIMETABLE.length
 

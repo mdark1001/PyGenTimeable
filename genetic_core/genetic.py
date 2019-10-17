@@ -10,6 +10,7 @@ import random
 import statistics
 import sys
 import time
+import copy
 
 DIAS = [0, 1, 2, 3, 4, 5]
 
@@ -49,7 +50,7 @@ class Solution(object):
         self.childrens.append(parent)
         return parent
 
-    def mutate(self, parent):
+    def mutate(self, parent, total_mutation):
         """
         :param parent:
         :param genSet:
@@ -58,7 +59,7 @@ class Solution(object):
         """
         index = random.randrange(0, len(parent.genes))
         genChildren = list(parent.genes)
-        for x in range(5):
+        for x in range(0, total_mutation):
             newGen, pivot = random.sample(self.genSet, 2)
             genChildren[index] = pivot if newGen == genChildren[index] else newGen
         genes = genChildren
@@ -75,18 +76,26 @@ class Solution(object):
 
     def selection(self):
         random.seed()
+
         for index, children in enumerate(self.childrens):
+            # print(index)
             bestParent = children
-            children2 = self.mutate(bestParent)
-            # print(bestParent.fitness, children.fitness)
-            if bestParent.fitness < children2.fitness:
+            childrens_temp = copy.copy(self.childrens)
+            childrens_temp.pop(index)
+            total_empalmes = bestParent.hasEmpalmes(childrens_temp)
+            if not total_empalmes:
                 continue
-            elif bestParent.fitness == children2.fitness:
+            children2 = self.mutate(bestParent, total_empalmes)
+            total_empalmes_2 = children2.hasEmpalmes(childrens_temp)
+            # print(bestParent.fitness, children.fitness)
+            if (bestParent.fitness < children2.fitness) and total_empalmes < total_empalmes_2:
+                continue
+            elif (bestParent.fitness == children2.fitness) and total_empalmes == total_empalmes_2:
                 # Selección por sorteo
                 children2 = children2 if random.randint(1, 10) % 2 == 0 else bestParent
                 self.childrens[index] = children2
-            else:
-                self.childrens[index] = bestParent
+            elif total_empalmes_2 < total_empalmes:
+                self.childrens[index] = children2
         self.printer()
         self.getGlobalFitness()
 

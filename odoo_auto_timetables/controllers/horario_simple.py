@@ -55,7 +55,8 @@ class HorariosExtendsSimple(Horarios):
                                    {
                                        'id_horario_carrera_grupo': id_horario_carrera_grupo,
                                        'grupos': self.gruposByIdCarreraHorario(id_horario_carrera_grupo),
-                                       'horas': self.getHoras()
+                                       'horas': self.getHoras(),
+                                       'dias': self.getDias()
                                    })
 
     @http.route('/api/horarios/initmodel/', methods=['GET'], auth='user', website=True)
@@ -87,14 +88,23 @@ class HorariosExtendsSimple(Horarios):
             'data': []
         })
 
-    @http.route('/api/horarios/solution', methods=['GET'], auth='user', website=True)
+    @http.route('/api/horarios/solution', methods=['POST'], auth='user', website=True)
     def solution(self, **kw):
         horario_id = int(kw.get('horario_id', 0))
+        hora_inicio = int(kw.get('hora_inicio', 1))
+        hora_fin = int(kw.get('hora_fin', 17))
+        dias_horario = list(map(int, str(kw.get('dias_horario', '1,2,3,4,5')).split(',')))
 
         if horario_id:
             return makeResponse(200, {
                 'message': 'Todo bien',
-                'data': http.request.env['oohel.engine_horario'].generateSolutionGrupo(horario_id, gt)
+                'data': http.request.env['oohel.engine_horario'].generateSolutionGrupo(
+                    horario_id=horario_id,
+                    hora_inicio=hora_inicio,
+                    hora_fin=hora_fin,
+                    dias_horario=dias_horario,
+                    gt=gt
+                )
             })
 
         return makeResponse(500, {
@@ -119,3 +129,13 @@ class HorariosExtendsSimple(Horarios):
 
     def getHoras(self):
         return http.request.env['ops4g.horas_horario'].sudo().search_read([], ['id', 'name'])
+
+    def getDias(self):
+        return [
+            (1, 'Lunes'),
+            (2, 'Martes'),
+            (3, 'Miércoles'),
+            (4, 'Jueves'),
+            (5, 'Viernes'),
+            (6, 'Sábado'),
+        ]

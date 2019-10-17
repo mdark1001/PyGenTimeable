@@ -8,6 +8,8 @@
                 <link rel="stylesheet" href="/escolares/static/src/css/horarios_web_site.css"/>
                 <link rel="stylesheet" href="/odoo_auto_timetables/static/src/css/main.css"/>
                 <link rel="stylesheet" href="/odoo_auto_timetables/static/src/css/animate.css"/>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"/>
                 <div id="wrap">
                     <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <input type="hidden" id="id_horario_carrera_grupo" name="id_horario_carrera_grupo"
@@ -24,52 +26,14 @@
                             </div>
                         </div>
                         <div class="row">
+                            <t t-call="odoo_auto_timetables.panel_configuracion_horario"/>
+                        </div>
+                        <div class="row">
 
                             <div class="row">
-                                <div class="col-lg-2 col-sm-2 hidden-xs" id="horario-container-cards">
-                                    <t t-foreach="grupos or []" t-as="grupo">
-                                        <div class="card card-default">
-                                            <div class="card-header">
-                                                <b t-field="grupo.grupo_id"/>
-                                            </div>
-                                            <div class="card-body">
-                                                <p>
-                                                    <li>Total de materias:
-                                                        <t t-esc="len(grupo.horario_id)"/>
-                                                    </li>
-                                                    <li>
-                                                        Estatus:
-                                                        <span t-field="grupo.state"/>
-                                                    </li>
-                                                </p>
-                                                <div class="card-footer">
-                                                    <button type="button" class="btn btn-small btn-info ver_horario"
-                                                            t-attf-data-horario_id="{{ grupo.id }}">
-                                                        <i class="fa fa-calendar-o" aria-hidden="true"/>
-                                                    </button>
-                                                    <button type="button" class="btn btn-small btn-warning solucion"
-                                                            t-attf-data-horario_id="{{ grupo.id }}">
-                                                        <i class="glyphicon glyphicon-retweet"/>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </t>
-
-                                </div>
-                                <div class="col-xs-12 hidden-sm hidden-lg hidden-md" id="horario-container-select">
-                                    <select class="form-control" id="select_grupos">
-                                        <option value="">-- Seleccione una opción --</option>
-                                        <t t-foreach="grupos or []" t-as="grupo">
-                                            <option t-attf-value="{{ grupo.id }}">
-                                                <b t-field="grupo.grupo_id"/>
-                                            </option>
-                                        </t>
-                                    </select>
-                                </div>
-                                <div class="col-xs-12 col-lg-10 col-sm-10">
+                                <div class="col-xs-12 col-lg-12 col-sm-12">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-lg-3">
+                                        <div class="col-xs-12 col-sm-12 col-lg-12">
                                             <div class="table-resposive">
                                                 <table class="table table-bordered table-striped table-condensed"
                                                        id="table-horario-info">
@@ -85,7 +49,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-lg-9">
+                                        <div class="col-xs-12 col-sm-12 col-lg-12">
                                             <div class="table-resposive">
                                                 <table class="table table-bordered table-striped table-condensed"
                                                        id="table-horario">
@@ -128,6 +92,7 @@
             </t>
             <script type="text/javascript">
                 const HORAS =<t t-esc="horas"/>;
+                $('.select2').select2();
             </script>
             <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"/>-->
             <script type="text/javascript" src="/odoo_auto_timetables/static/src/js/rq_comun.js"/>

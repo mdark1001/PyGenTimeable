@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="odoo_auto_timetables.panel_configuracion_horario" name="Horarios simple">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Configuración del horario</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="form_config_horario">
+                        <div class="form-group col-xs-12 col-sm-4">
+                            <label for="select_grupos">Grupo</label>
+                            <select class="form-control" required="required" name="select_grupos" id="select_grupos">
+                                <option value="">-- Seleccione una opción --</option>
+                                <t t-foreach="grupos or []" t-as="grupo">
+                                    <option t-attf-value="{{ grupo.id }}">
+                                        <b t-field="grupo.grupo_id"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-4">
+                            <label for="hora_max">
+                                Hora de entrada
+                            </label>
+                            <select class="form-control" required="required" id="hora_inicio" name="hora_inicio">
+                                <option value="">-- Seleccione una opción --</option>
+                                <t t-foreach="horas" t-as="h">
+                                    <option t-attf-value="{{ h['id'] }}">
+                                        <t t-esc=" h['name'] "/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-4">
+                            <label for="hora_max">
+                                Hora de salida
+                            </label>
+                            <select class="form-control" required="required" id="hora_fin" name="hora_fin">
+                                <option value="">-- Seleccione una opción --</option>
+                                <t t-foreach="horas" t-as="h">
+                                    <option t-attf-value="{{ h['id'] }}">
+                                        <t t-esc=" h['name'] "/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-6">
+                            <label for="dias_horario">
+                                Día(s) de la semana
+                            </label>
+                            <select class="form-control select2" required="required" id="dias_horario" name="dias_horario" multiple="multiple">
+                                <t t-foreach="dias" t-as="d">
+                                    <option t-attf-value="{{ d[0] }}" selected="selected">
+                                        <t t-esc="d[1]"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            <button type="button" class="btn pull-right btn-small btn-warning solucion">
+                                Generar horario
+                                <i class="glyphicon glyphicon-retweet"/>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

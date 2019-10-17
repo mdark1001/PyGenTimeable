@@ -152,11 +152,10 @@ class EngineHorarios(models.Model):
 
         return mat
 
-    def generateSolutionGrupo(self, horario_id, gt):
-        global HORAS
-        HORAS = [x for x in range(1, TOTAL_HORAS * len(DIAS))]
+    def generateSolutionGrupo(self, horario_id, hora_inicio, hora_fin, dias_horario, gt):
+        horas = self.getListHoras(hora_inicio, hora_fin, dias_horario)
         materias = self.inicializar(horario_id=horario_id)
-        solution = gt.Solution(HORAS, materias)
+        solution = gt.Solution(horas, materias)
         solution.printer()
         solution.getGlobalFitness()
         while solution.getGlobalFitness() != 0:
@@ -181,3 +180,15 @@ class EngineHorarios(models.Model):
             })
 
         return profersores_impartio_materia
+
+    def getListHoras(self, hora_inicio, hora_fin, dias_horario):
+
+        horas = [x for x in range(hora_inicio, hora_fin)]
+        print(hora_inicio, hora_fin, dias_horario)
+        hd = [horas]
+        horasTotales = []
+        for index in range(2, 7):
+            hd.append(list(map(lambda x: x + len(horas), hd[index - 2])))
+        for dias_horas in dias_horario:
+            horasTotales += hd[dias_horas - 1]
+        return horasTotales

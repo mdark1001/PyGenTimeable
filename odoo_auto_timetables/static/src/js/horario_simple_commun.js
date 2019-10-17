@@ -68,11 +68,11 @@ const horario_simple = function () {
                 d['color'] = COLORS_TIMETABLE[index % COLORS_TIMETABLE.length]
 
                 html += ` <tr>
-                            <td><div class="badge-responsive badge-block"  style=" background-color: ${d['color']}; color: white;" >
+                            <td>
                                 ${  d['subject_id'][1]}-${d['code_subject']} <br/>
                              ${d['faculty_id'] ? d['faculty_id'][1] : ''} <br/>
                             ${0}
-                            </div>
+                                
                             </td>
                       </tr>`;
             });
@@ -129,12 +129,10 @@ const horario_simple = function () {
                 }
             )
         },
-        propuestaSolucion: function (horario_id, tableBodyId) {
+        propuestaSolucion: function (data, tableBodyId) {
             return new Promise(function (resolve, reject) {
 
-                rq.sendSimpleRequest(base_url + 'solution', {
-                    'horario_id': horario_id
-                }, 'GET', 'json', async function (data) {
+                rq.sendSimpleRequest(base_url + 'solution', data, 'POST', 'json', async function (data) {
                     console.log(data);
                     resolve(data)
                 })

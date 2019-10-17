@@ -85,6 +85,7 @@ if __name__ == '__main__':
     print("*" * 50)
     solution = Solution(HORAS, materias)
     solution.printer()
-    while solution.getGlobalFitness() != 0:
+    solution.getGlobalFitness()
+    while solution.getGlobalFitness() !=0:
         solution.selection()
     solution.printer()

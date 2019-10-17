@@ -28,6 +28,7 @@
     'demo': [],
 
     'data': [
+        'templates/panel_configuracion_horario.xml',
         'templates/horarios_simple.xml',
     ],
 

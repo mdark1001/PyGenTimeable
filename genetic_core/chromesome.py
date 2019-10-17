@@ -37,6 +37,18 @@ class Chromosome(object):
     def __str__(self):
         return "{}".format(self.getGenes())
 
+    def hasEmpalmes(self, population):
+        p = []
+        total = 0
+        for d in population:
+            p += d.genes
+        for g in self.genes:
+            if g in p:
+                total += 1
+        total += self.calculateFitness()
+        print("*********************----->>>", total)
+        return total
+
     def serializer(self):
         return {
             'fitness': self.fitness,

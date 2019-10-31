@@ -6,7 +6,7 @@ let http = require('http').Server(app);
 const PORT = 3000;
 let io = require('socket.io')(http);
 let connetion = require('./connect')(io);
-const AlumnoManager = require('./AlumnosManager');
+
 const bodyParser = require('body-parser');
 let HORARIO_MATERIA_GRUPO = {};
 

@@ -3,7 +3,7 @@ const config = {
     "ODOO": {
         "port": 5432,
         "app_name": "horarios-real-time",
-        "database": "upa2",
+        "database": "smk",
         "username": "postgres",
         "password": "admin",
         "host": "localhost",

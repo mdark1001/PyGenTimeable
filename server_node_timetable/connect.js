@@ -9,14 +9,6 @@ module.exports = function (io) {
         console.log('a user connected');
         socket.on('register', function (data) {
             console.log(data);
-            let alumno = AlumnoManager.agregarAlumnoStack(data);
-            alumno.socket = socket;
-            if (!AlumnoManager.ALUMNOS_PLANES[alumno.planId]) {
-                AlumnoManager.ALUMNOS_PLANES[alumno.planId] = [alumno];
-                //console.log(AlumnoManager);
-            } else {
-                AlumnoManager.ALUMNOS_PLANES[alumno.planId].push(alumno);
-            }
         });
         socket.on('disconnect', function () {
             console.log('user disconnected');

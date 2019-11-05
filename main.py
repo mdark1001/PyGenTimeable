@@ -4,10 +4,8 @@
 @project 
 @name main
 """
-import datetime
-import unittest
 
-from PyGenTimeable.genetic_core.genetic import Solution
+from PyGenTimeable.odoo_auto_timetables.genetic_core.genetic import Solution
 
 DIAS = [0, 1, 2, 3, 4, 5]
 TOTAL_HORAS = 17

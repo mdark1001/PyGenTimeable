@@ -39,11 +39,11 @@ class Solution(object):
             sizeMuestral = min(size - len(genes), len(self.genSet))
             genes.extend(random.sample(self.genSet, sizeMuestral))
 
-        parent = Chromosome(genes, materia['materia_id'],
-                            materia['horario_materia_id'],
-                            materia['name'],
+        parent = Chromosome(genes, materia['materia_id'][0],
+                            materia['id'],
+                            materia['materia_id'][0],
                             materia['horas_semana'],
-                            materia['profesores_candidatos']
+                            materia['profesor_disponibilidad']
                             )
         parent.calculateFitness()
         self.childrens.append(parent)
@@ -67,7 +67,7 @@ class Solution(object):
                               horario_materia_id=parent.horario_materia_id,
                               name=parent.name,
                               horas_semana=parent.horas_semana,
-                              profesores_candidatos=parent.profesores_candidatos,
+                              profesor_disponibilidad=parent.profesor_disponibilidad,
                               )
         children.calculateFitness()
         parent.calculateFitness()

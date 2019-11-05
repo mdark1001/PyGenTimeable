@@ -7,13 +7,13 @@
 
 
 class Chromosome(object):
-    def __init__(self, horas, materia_id, horario_materia_id, name, horas_semana, profesores_candidatos):
+    def __init__(self, horas, materia_id, horario_materia_id, name, horas_semana, disponibilidad_profesor):
         self.fitness = 100
         self.genes = horas
         self.materia_id = materia_id
         self.name = name
-        self.horas_semana = horas_semana
-        self.profesores_candidatos = profesores_candidatos
+        self.horas_semana = horas_semana,
+        self.disponibilidad_profesor = disponibilidad_profesor
         self.horario_materia_id = horario_materia_id
 
     def getGenes(self):
@@ -23,6 +23,7 @@ class Chromosome(object):
         self.fitness = 0.0
         empalme_dias = 0
         horario = set()
+        # disponibilidad_profesor
         for x in self.genes:
             if x in horario:
                 empalme_dias += 1
@@ -41,9 +42,5 @@ class Chromosome(object):
         return {
             'fitness': self.fitness,
             'genes': self.genes,
-            'materia_id': self.materia_id,
-            'name': self.name,
-            'horas_semana': self.horas_semana,
-            'profesores_candidatos': [],
             'horario_materia_id': self.horario_materia_id,
         }

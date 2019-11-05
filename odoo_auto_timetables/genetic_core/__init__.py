@@ -8,5 +8,4 @@
 from . import genetic
 from . import chromesome
 from . import fitness
-from . import printing
 from . import rules

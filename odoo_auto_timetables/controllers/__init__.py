@@ -5,5 +5,3 @@
 @name __init__.py
 """
 
-
-from . import horario_simple

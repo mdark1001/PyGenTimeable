@@ -18,17 +18,11 @@
 
     'depends': [
         'base',
-        'horarios',
-        'openeducat_classroom',
-        'escolares',
-        'alumnos',
-        'profesores',
     ],
 
     'demo': [],
 
     'data': [
-        'templates/horarios_simple.xml',
     ],
 
     'installable': True,

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Revisa y valida loa disponibilidad de los grupos en la reinscipción",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.3",
     "express": "^4.15.2",
     "node-odoo": "^0.1.1",
